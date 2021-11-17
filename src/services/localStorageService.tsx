@@ -1,4 +1,3 @@
-import IStateInterfaceItem from "../interfaces/IStateInterface";
 
 export default class LocalStorage {
 

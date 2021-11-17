@@ -14,19 +14,13 @@ const UserList = () => {
   const dispatch :Dispatch<any> =useDispatch();
  const [count, setCount] = useState(0);
   const history = useHistory();
-  const LocalStorage1 = new LocalStorage();
   dispatch(getUser());
- //let values = LocalStorage1.getData('store');
-
  const values : IUser[] = useSelector((state:userState) => state.userStates,shallowEqual)
-
   const handleDeleteSubmit = (user:IUser) => {
     console.log(user);
    dispatch(deleteUser(user))
     setCount(prevCount => prevCount + 1)
-   
   };
-
   const handleEditSubmit = (id:string) => {
     
     console.log(id);
@@ -79,4 +73,4 @@ const UserList = () => {
     </div>
   ); 
  }
-export default UserList ;
+export default  UserList ;

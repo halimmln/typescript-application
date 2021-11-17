@@ -2,7 +2,6 @@ import React, { Dispatch, Fragment } from 'react';
 import { useFormik } from 'formik';
 import { useHistory, useParams } from 'react-router-dom';
 import LocalStorage from '../../services/localStorageService';
-import IStateInterface from "../../interfaces/IStateInterface";
 import {
     Paper,
     Box,
