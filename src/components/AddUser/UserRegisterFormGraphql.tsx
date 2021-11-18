@@ -12,10 +12,14 @@ import {
     
   } from '@material-ui/core';
   
+import Alert from "@material-ui/lab/Alert";
 import Button from "@mui/material/Button";
 import { validationSchema } from '../../validationSchema/validationSchema';
 import {  useMutation, useQuery } from '@apollo/client';
 import { userAddQuery, userListQuery, userUpdateQuery } from '../../graphqlQuery/usersQuery';
+import {  Snackbar, SnackbarCloseReason } from '@mui/material';
+
+
 const UserRegisterGraph :React.FC = ()=> {
   
   const { id } :any= useParams();
@@ -42,6 +46,15 @@ const UserRegisterGraph :React.FC = ()=> {
    
   }
   }
+  const [open, setOpen] = React.useState(true);
+  
+  const handleClose = (event:any, reason:SnackbarCloseReason):void => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
   const [addUser] = useMutation(userAddQuery);
   const [updateUser,{data,error}] = useMutation(userUpdateQuery);
     if(error){
@@ -53,9 +66,11 @@ const UserRegisterGraph :React.FC = ()=> {
       onSubmit: values1 => {
         if(id == undefined || id == 0){
           addUser({ variables: values1 });
+          setOpen(true);
         }
         else {
           updateUser({ variables:values1 });
+          setOpen(true);
         }
           history.push('/userListNew');
         },
@@ -144,8 +159,14 @@ return (
               {UserForm.values.id ? 'Update':'Add User'}
             </Button>
           </Box>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert variant="filled" severity="success" >
+          This is a success message!
+        </Alert>
+      </Snackbar>
         </Box>
       </Paper>
+      
     </Fragment>
   );
 }

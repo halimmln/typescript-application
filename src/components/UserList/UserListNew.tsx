@@ -6,7 +6,7 @@ import { userdeleteQuery ,userListQuery } from '../../graphqlQuery/usersQuery';
 
   
 
-const UserList = ( ) => {
+const UserList = (  ) => {
   
     const [deleteUser, { data, loading, error }] = useMutation(userdeleteQuery);
     const query=  useQuery(userListQuery,{onCompleted:(data)=>console.log(data)})
