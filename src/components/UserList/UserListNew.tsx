@@ -1,29 +1,27 @@
-import  { Dispatch, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Table,TableBody,TableCell ,TableContainer,TableHead,TableRow,Paper} from '@mui/material';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
-import { deleteUser, getUser } from '../../redux/actionCreator';
+import { useQuery,gql, useMutation } from "@apollo/client";
+import { userdeleteQuery ,userListQuery } from '../../graphqlQuery/usersQuery';
 
+  
 
-const UserList = () => {
- 
-  const dispatch :Dispatch<any> =useDispatch();
-  const [count, setCount] = useState(0);
-  const history = useHistory();
-  dispatch(getUser());
-  const values : IUser[] = useSelector((state:userState) => state.userStates,shallowEqual)
-  const handleDeleteSubmit = (user:IUser) => {
-    dispatch(deleteUser(user))
-    setCount(prevCount => prevCount + 1)
-  };
-  const handleEditSubmit = (id:string) => {
-    history.push(`/userForm/${id}`);
+const UserList = ( ) => {
+  
+    const [deleteUser, { data, loading, error }] = useMutation(userdeleteQuery);
+    const query=  useQuery(userListQuery,{onCompleted:(data)=>console.log(data)})
+    const values = query && query.data && query.data.users ? query.data.users:[];
+    const history = useHistory();
+    const handleDeleteSubmit = (user:IUser) => {
+        deleteUser({ variables: user });
+    };
+    const handleEditSubmit = (id:string) => {
+    history.push(`/userFormGraphql/${id}`);
   };
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', padding: 30 }}>
-    <div>
+    <div >
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
@@ -65,6 +63,7 @@ const UserList = () => {
     </TableContainer>
     </div>
     </div>
+   
   ); 
  }
-export default  UserList ;
+export default UserList;

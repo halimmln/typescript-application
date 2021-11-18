@@ -17,7 +17,7 @@ switch(action.type){
         }
         const getdata = LocalStorage1.getData('store'); 
        let values = getdata && getdata.userStates ?  getdata.userStates:[];
-        if (newUser.id == 0 ) {
+        if (newUser.id === 0 ) {
                 if (localStorage.getItem('store') == null) {
                     newUser.id = 1;
                 } else {
@@ -35,53 +35,26 @@ switch(action.type){
                     values[index].phone = newUser.phone;
                   
                   }
-                
-                
-              }
-            
-        //alert(JSON.stringify (state.userStates));
+               }
         const newState : userState = {...state,userStates:values}
-        //alert(JSON.stringify (newState));
-       
           LocalStorage1.setData('store',newState);
-        return  newState;
-        
+          return  newState;
     case UPDATE_USER:
         const getdata12 = LocalStorage1.getData('store'); 
         let getvalues = getdata12 && getdata12.userStates ?  getdata12.userStates:[];
-         if (action.user.id == 0 ) {
-                 if (localStorage.getItem('store') == null) {
-                    action.user.id = 1;
-                 } else {
-                    action.user.id = getvalues.length + 1;
-                 }
-                 getvalues.push(action.user);
-               } else {
-                
                    let index = getvalues.findIndex((i:IUser) => i.id == action.user.id);
-                   if(index != -1 ){
-                                
+                   if(index !== -1 ){
                     getvalues[index].fname = action.user.fname;
                     getvalues[index].lname = action.user.lname
                     getvalues[index].email = action.user.email
                     getvalues[index].phone = action.user.phone;
                    
-                   }
-                 
-                 
-               }
-             
-         //alert(JSON.stringify (state.userStates));
-         const newupdatedState : userState = {userStates:getvalues}
-         //alert(JSON.stringify (newState));
-        
+                   } 
+           const newupdatedState : userState = {userStates:getvalues}
            LocalStorage1.setData('store',newupdatedState);
          return  newupdatedState;
-        
-        
     case DELETE_USER:
         const getdata1 = LocalStorage1.getData('store');
-        
         let values1 =  getdata1.userStates;
         values1.forEach((k:any, i:number) => {
             if (k.id === action.user.id) {
@@ -91,14 +64,12 @@ switch(action.type){
           const newState1 : userState = {userStates:values1}
             LocalStorage1.setData('store',newState1);
           return  newState1;
-        break;
     case GET_USER:
          const getState = LocalStorage1.getData('store');
             if(getState && getState.userStates && getState.userStates.length){
                 return getState;
             }
             return state;
-
 }
 return state;
 }

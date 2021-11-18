@@ -8,20 +8,20 @@ import {
     Grid,
     TextField,
     Typography,
-        
+    
+    
   } from '@material-ui/core';
   
 import Button from "@mui/material/Button";
-import { useDispatch } from 'react-redux';
-import { addUser, updateUser } from '../../redux/actionCreator';
 import { validationSchema } from '../../validationSchema/validationSchema';
-const UserRegister :React.FC<{}> = ()=> {
-
+import {  useMutation, useQuery } from '@apollo/client';
+import { userAddQuery, userListQuery, userUpdateQuery } from '../../graphqlQuery/usersQuery';
+const UserRegisterGraph :React.FC = ()=> {
+  
   const { id } :any= useParams();
-  const LocalStorage1 =new LocalStorage();
-  const values = LocalStorage1.getData('store').userStates;
+  const query=  useQuery(userListQuery,{onCompleted:(data)=>console.log(data)})
+  const values = query && query.data && query.data.users ? query.data.users:[];
   const history = useHistory();
-  const dispatch :Dispatch<any> =useDispatch();
   let initialState : IUser = {
     id:0,
     fname:'',
@@ -29,8 +29,7 @@ const UserRegister :React.FC<{}> = ()=> {
     email:'',
     phone:''
   }
-  
-  if((id != 0 || id != 0 ) && values && values.length ){
+  if((id != undefined || id != 0 ) && values && values.length ){
     let index = values.findIndex((i:any) => i.id == id);
     if(index != -1 ){
       initialState ={
@@ -43,19 +42,25 @@ const UserRegister :React.FC<{}> = ()=> {
    
   }
   }
-  
-const UserForm  = useFormik({
-    initialValues: initialState,
-    validationSchema ,
-    onSubmit: values1 => {
-      if(values1.id == 0)
-       dispatch(addUser(values1))
-       else 
-       dispatch(updateUser(values1))
-       history.push('/userList');
-      },
+  const [addUser] = useMutation(userAddQuery);
+  const [updateUser,{data,error}] = useMutation(userUpdateQuery);
+    if(error){
+      console.log("getting error",error)
+    }
+  const UserForm  = useFormik({
+      initialValues: initialState,
+      validationSchema ,
+      onSubmit: values1 => {
+        if(id == undefined || id == 0){
+          addUser({ variables: values1 });
+        }
+        else {
+          updateUser({ variables:values1 });
+        }
+          history.push('/userListNew');
+        },
 
-});
+  });
 
 return (
     <Fragment >
@@ -144,4 +149,4 @@ return (
     </Fragment>
   );
 }
-export default UserRegister;
+export default UserRegisterGraph;
