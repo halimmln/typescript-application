@@ -1,16 +1,24 @@
-import React from "react";
+import React, { Dispatch } from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import { deleteAction } from "../../redux/actionCreator";
+import { useDispatch } from "react-redux";
 
-export default function Snackbar1({ message ,openStatus }:any) {
-  console.log(openStatus);
-  const [open, setOpen] = React.useState(false);
+export default function WebSnackbar({ message ,openStatus }:any) {
+  //console.log(openStatus);
+  const dispatch :Dispatch<any> =useDispatch();
+  setTimeout(()=>{
+   
+    dispatch(deleteAction());
+
+  },10000)
+  
   function handleClose(event:any, reason:string) {
     if (reason === "clickaway") {
       return;
     }
-    setOpen(false);
+    openStatus =false;
   }
 
   return (
@@ -21,7 +29,7 @@ export default function Snackbar1({ message ,openStatus }:any) {
           horizontal: "left"
         }}
         open={openStatus}
-        autoHideDuration={2000}
+        autoHideDuration={10000}
         onClose={() => handleClose}
         ContentProps={{
           "aria-describedby": "message-id"
@@ -37,3 +45,5 @@ export default function Snackbar1({ message ,openStatus }:any) {
     </div>
   );
 }
+
+

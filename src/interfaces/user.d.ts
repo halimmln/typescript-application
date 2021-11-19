@@ -9,8 +9,12 @@ interface IUser {
   
   type userState = {
     userStates: IUser[];
+    action:IWebsnackbar;
   };
-  
+  type IWebsnackbar ={
+    msg:string,
+    open:boolean
+  }
   type userAction = {
     type: string;
     user: IUser;

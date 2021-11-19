@@ -1,18 +1,26 @@
-import  { Dispatch, useState } from 'react';
+import  { Dispatch, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Table,TableBody,TableCell ,TableContainer,TableHead,TableRow,Paper} from '@mui/material';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { connect, shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { deleteUser, getUser } from '../../redux/actionCreator';
 
+const mapState = (state: userState) => ({
+  userStates: state.userStates
+}
+) 
 
-const UserList = () => {
- 
+const UserList = (props:any) => {
+  
   const dispatch :Dispatch<any> =useDispatch();
   const [count, setCount] = useState(0);
   const history = useHistory();
-  dispatch(getUser());
-  const values : IUser[] = useSelector((state:userState) => state.userStates,shallowEqual)
+   //
+  //console.log(props.location.pathname)
+  useEffect(()=> {
+    dispatch(getUser())
+  },[])
+  const values : IUser[] = props.userStates;
   const handleDeleteSubmit = (user:IUser) => {
     dispatch(deleteUser(user))
     setCount(prevCount => prevCount + 1)
@@ -67,4 +75,4 @@ const UserList = () => {
     </div>
   ); 
  }
-export default  UserList ;
+export default connect(mapState) (UserList) ;

@@ -3,13 +3,12 @@ import { Table,TableBody,TableCell ,TableContainer,TableHead,TableRow,Paper} fro
 import React, { useState } from "react";
 import { useQuery,gql, useMutation } from "@apollo/client";
 import { userdeleteQuery ,userListQuery } from '../../graphqlQuery/usersQuery';
-import Snackbar1 from '../Snackbar/Snackbar';
+import WebSnackbar from '../Snackbar/Snackbar';
 
   
 
 const UserList = (  ) => {
-  const [status, setStatusBase] = React.useState({msg:"",key:0});
-  const [open,setOpen]=useState(false);
+ 
   const [count, setCount] = useState(0);
     const [deleteUser, { data, loading, error }] = useMutation(userdeleteQuery);
     const query=  useQuery(userListQuery,{onCompleted:(data)=>console.log(data)})
@@ -17,9 +16,8 @@ const UserList = (  ) => {
     const history = useHistory();
     const handleDeleteSubmit = (user:IUser) => {
         deleteUser({ variables: user });
-        setStatusBase({ msg: user.fname+"  user deleted Successfuly", key: Math.random() });
         setCount(prevCount => prevCount + 1)
-        setOpen(true);
+        
     };
     const handleEditSubmit = (id:string) => {
     history.push(`/userFormGraphql/${id}`);
@@ -68,7 +66,6 @@ const UserList = (  ) => {
       </Table>
     </TableContainer>
     </div>
-    {status ? <Snackbar1 key={status.key} message={status.msg} openStatus ={open} /> : null}
     </div>
    
   ); 

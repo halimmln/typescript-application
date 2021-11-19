@@ -30,9 +30,9 @@ const UserRegister :React.FC<{}> = ()=> {
     phone:''
   }
   
-  if((id != 0 || id != 0 ) && values && values.length ){
-    let index = values.findIndex((i:any) => i.id == id);
-    if(index != -1 ){
+  if((parseInt (id) !== 0 || id !== null ) && values && values.length ){
+    let index = values.findIndex((i:any) => i.id === parseInt (id));
+    if(index !== -1 ){
       initialState ={
       id:id,
       fname:values[index].fname,
@@ -48,7 +48,7 @@ const UserForm  = useFormik({
     initialValues: initialState,
     validationSchema ,
     onSubmit: values1 => {
-      if(values1.id == 0)
+      if(id === undefined)
        dispatch(addUser(values1))
        else 
        dispatch(updateUser(values1))

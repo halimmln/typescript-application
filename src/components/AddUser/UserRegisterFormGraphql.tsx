@@ -1,7 +1,6 @@
 import React, { Dispatch, Fragment } from 'react';
 import { useFormik } from 'formik';
 import { useHistory, useParams } from 'react-router-dom';
-import LocalStorage from '../../services/localStorageService';
 import {
     Paper,
     Box,
@@ -33,9 +32,9 @@ const UserRegisterGraph :React.FC = ()=> {
     email:'',
     phone:''
   }
-  if((id != undefined || id != 0 ) && values && values.length ){
-    let index = values.findIndex((i:any) => i.id == id);
-    if(index != -1 ){
+  if((id !== undefined || id !== 0 ) && values && values.length ){
+    let index = values.findIndex((i:any) => i.id === id);
+    if(index !== -1 ){
       initialState ={
       id:id,
       fname:values[index].fname,
@@ -64,7 +63,7 @@ const UserRegisterGraph :React.FC = ()=> {
       initialValues: initialState,
       validationSchema ,
       onSubmit: values1 => {
-        if(id == undefined || id == 0){
+        if(id === undefined || id === 0){
           addUser({ variables: values1 });
           setOpen(true);
         }

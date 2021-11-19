@@ -1,8 +1,9 @@
 import LocalStorage from "../services/localStorageService";
-import { ADD_USER, DELETE_USER, GET_USER, UPDATE_USER } from "./constant/actionConstant";
+import { ADD_USER, DELETE_ACTION, DELETE_USER, GET_USER, UPDATE_USER } from "./constant/actionConstant";
 
 const initialState : userState ={
-    userStates:[{id:0,fname:'',lname:'',email:'',phone:''}]
+    userStates:[{id:0,fname:'',lname:'',email:'',phone:''}],
+    action:{msg:"",open:false}
 };
 const LocalStorage1 =new LocalStorage();
 const reducer = (state:userState = initialState , action:userAction) :userState => {
@@ -36,7 +37,7 @@ switch(action.type){
                   
                   }
                }
-        const newState : userState = {...state,userStates:values}
+        const newState : userState = {...state,userStates:values,action:{msg:newUser.fname+" added successfully",open:true}}
           LocalStorage1.setData('store',newState);
           return  newState;
     case UPDATE_USER:
@@ -50,18 +51,18 @@ switch(action.type){
                     getvalues[index].phone = action.user.phone;
                    
                    } 
-           const newupdatedState : userState = {userStates:getvalues}
+           const newupdatedState : userState = {userStates:getvalues,action:{msg:action.user.fname+" updated successfully",open:true}}
            LocalStorage1.setData('store',newupdatedState);
          return  newupdatedState;
     case DELETE_USER:
         const getdata1 = LocalStorage1.getData('store');
         let values1 =  getdata1.userStates;
         values1.forEach((k:any, i:number) => {
-            if (k.id === action.user.id) {
+            if (k.id === (action.user.id)) {
                 values1.splice(i,1);
             }
           });
-          const newState1 : userState = {userStates:values1}
+          const newState1 : userState = {userStates:values1,action:{msg:action.user.fname+" deleted successfully",open:true}}
             LocalStorage1.setData('store',newState1);
           return  newState1;
     case GET_USER:
@@ -70,6 +71,12 @@ switch(action.type){
                 return getState;
             }
             return state;
+     case DELETE_ACTION:
+                const gateState = LocalStorage1.getData('store');
+                let currentvalue =  gateState.userStates;
+                const newState12 : userState = {userStates:currentvalue,action:{msg:" deleted successfully",open:false}}
+                LocalStorage1.setData('store',newState12);
+            return  newState12;
 }
 return state;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
-import { Col, Row, Table, Form, Button, Container } from 'react-bootstrap';
+import { Col, Row,  Form, Button, Container } from 'react-bootstrap';
 import LocalStorage from '../../services/localStorageService';
 const AddUser = () => {
   
@@ -17,9 +17,9 @@ const AddUser = () => {
     email:'',
     phone:''
   }
-  if((id != undefined || id != null ) && values.length ){
-    let index = values.findIndex((i:any) => i.id == id);
-    if(index != -1 ){
+  if((id !== undefined || id !== null ) && values.length ){
+    let index = values.findIndex((i:any) => i.id === id);
+    if(index !== -1 ){
       initialState ={
       id:id,
       fname:values[index].fname,
@@ -31,29 +31,19 @@ const AddUser = () => {
   }
   }
   const [user, setUser] = React.useState(initialState);
-  // const [values,setValues]= React.useState([]);
-  const [fname, setFname] = React.useState();
-
-  const [lname, setLname] = React.useState();
-  const [email, setEmail] = React.useState();
-  const [phone, setPhone] =React.useState();
-    //setValues(LocalStorage1.getData('store'));
-   
-  //alert(id);
-  
   const handleSubmit = () => {
     
-    if (user.id == undefined || user.id == null) {
-      if (localStorage.getItem('store') == null) {
+    if (user.id === undefined || user.id === null) {
+      if (localStorage.getItem('store') === null) {
         user.id = 1;
       } else {
         user.id = values.length + 1;
       }
       values.push(user);
     } else {
-      if (user.id != undefined || user.id == null) {
-        let index = values.findIndex((i:any) => i.id == user.id);
-        if(index != -1 ){
+      if (user.id !== undefined || user.id === null) {
+        let index = values.findIndex((i:any) => i.id === user.id);
+        if(index !== -1 ){
          
           
           values[index].fname = user.fname;

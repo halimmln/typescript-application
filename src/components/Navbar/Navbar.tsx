@@ -4,7 +4,6 @@ import { Navbar, Nav } from 'react-bootstrap';
 
 const Navigation = () => {
   const pathname = window.location.pathname
-  console.log(pathname)
   return (
     <Navbar bg="primary" variant="dark">
       <Navbar.Collapse id="basic-navbar-nav">
