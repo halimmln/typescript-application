@@ -46,7 +46,7 @@ const UserRegisterGraph :React.FC = ()=> {
    
   }
   }
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   
   const handleClose = (event:any, reason:SnackbarCloseReason):void => {
     if (reason === 'clickaway') {
